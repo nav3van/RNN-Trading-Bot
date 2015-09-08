@@ -1,18 +1,17 @@
-import sys      # stdout.write, stdout.flush
-
+import sys, time
 from file_check import *
-
-nonce_file = 'auth/nonce.sqlite'
-output_file = parent_dir + 'data/output.sqlite'
 
 check_data_files()
 
 from print_trade_info import set_low_balance_msg, print_trade, reset_print_info
-from db_access import db_connect, db_exists, output_records_exist, output_init_record, get_last_output_record, create_nonce_db
+from db_access import db_connect, db_exists, output_records_exist, output_init_record, get_last_output_record
 from balances import *
 from analyst import *
 from trader import *
 from info_track import *
+
+nonce_file = 'auth/nonce.sqlite'
+output_file = parent_dir + 'data/output.sqlite'
 
 bal = Balance(0, 0)
 timer = Timer()
@@ -22,7 +21,7 @@ initial_order = True
 
 while not db_exists(output_file):
     timer.track()
-    sys.stdout.write('\rWaiting for output.sqlite to be created...%i:%i:%i' % (timer.hour, timer.min, timer.sec))
+    sys.stdout.write('\rWaiting for output.sqlite, execute neural network...%i:%i:%i' % (timer.hour, timer.min, timer.sec))
     sys.stdout.flush()
     time.sleep(1)
 timer.reset()
@@ -31,7 +30,7 @@ db_connect(nonce_file, output_file)
 
 while not output_records_exist():
     timer.track()
-    sys.stdout.write('\rWaiting for first order %i:%i:%i' % (timer.hour, timer.min, timer.sec))
+    sys.stdout.write('\rWaiting for first prediction from neural network %i:%i:%i' % (timer.hour, timer.min, timer.sec))
     sys.stdout.flush()
     time.sleep(1)
 timer.reset()
@@ -69,10 +68,10 @@ while True:
                         bal.set_balances(prediction_buy_response['return']['funds']['btc'], prediction_buy_response['return']['funds']['usd'])
                         info.prediction_trade_complete()
 
-                        #cs_args = post_trade_check(bal.btc_bal(), 'COUNTER_SELL', usd_to_btc_qty, predicted_price)
+                        cs_args = post_trade_check(bal.btc_bal(), 'COUNTER_SELL', usd_to_btc_qty, predicted_price)
 
-                        #counter_sell_response = make_request(cs_args[0], cs_args[1], cs_args[2], cs_args[3])
-                        #info.counter_trade_complete()
+                        counter_sell_response = make_request(cs_args[0], cs_args[1], cs_args[2], cs_args[3])
+                        info.counter_trade_complete()
                         timer.reset()
             else:
                 set_low_balance_msg(str(order_type + ' order aborted - Inadequate USD balance ($' + str(bal.btc_bal()) + ')'))
@@ -87,10 +86,10 @@ while True:
                         bal.set_balances(prediction_sell_response['return']['funds']['btc'], prediction_sell_response['return']['funds']['usd'])
                         info.prediction_trade_complete()
 
-                        #cb_args = post_trade_check(bal.usd_bal(), 'COUNTER_BUY', btc_to_usd_qty, predicted_price)
+                        cb_args = post_trade_check(bal.usd_bal(), 'COUNTER_BUY', btc_to_usd_qty, predicted_price)
 
-                        #counter_buy_response = make_request(cb_args[0], cb_args[1], cb_args[2], cb_args[3])
-                        #info.counter_trade_complete()
+                        counter_buy_response = make_request(cb_args[0], cb_args[1], cb_args[2], cb_args[3])
+                        info.counter_trade_complete()
                         timer.reset()
             else:
                 set_low_balance_msg(str(order_type + ' order aborted - Inadequate BTC balance (B' + str(bal.btc_bal()) + ')'))

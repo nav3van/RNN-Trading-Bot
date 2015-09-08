@@ -1,11 +1,5 @@
 from print_trade_info import set_api_resp_err, set_expected_nonce, set_api_action_msg, set_api_err
-import urllib.request
-import urllib.parse
-import json
-import codecs
-import hmac
-import hashlib
-import http.client
+import urllib.request, urllib.parse, json, codecs, hmac, hashlib, http.client
 from db_access import get_nonce, adjust_nonce
 
 try:
@@ -64,7 +58,7 @@ def make_request(_action, _btc_qty, _price, _order_num):
     sign = H.hexdigest()
     headers = {'Content-type':'application/x-www-form-urlencoded','Key':api_key,'Sign':sign}
 
-    # Attempt HTTP request up to 5 times if it continues to fail on the previous 4 attempts
+    # Attempt HTTP request up to 5 times if valid response not received on prior requests
     while attempts < 5:
         try:
             conn.request('POST','/tapi', params, headers)
@@ -82,10 +76,3 @@ def make_request(_action, _btc_qty, _price, _order_num):
         except urllib.request.HTTPError as err:
             attempts += 1
             set_api_err(str(err.code), err.read())
-
-'''
-todo
-get list of all open orders
-if the current price is x% from the price of the unfilled order
-or if y amount of time has passed since the order was placed, cancel that order
-'''
