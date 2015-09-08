@@ -1,17 +1,16 @@
-import os
+import os, sqlite3
 from sys import exit
-import sqlite3
 
-missing_auth_dir = '  project/pyTrader/auth not found.\n' \
+missing_auth_dir = '  neural-network-trading-bot/pyTrader/auth not found.\n' \
                    '    auth directory has been created'
-missing_data_dir = '  project/pyTrader/auth not found.\n' \
+missing_data_dir = '  neural-network-trading-bot/pyTrader/data not found.\n' \
                    '    data directory has been created'
-missing_nonce_db = '  project/pyTrader/auth/nonce.sqlite not found.\n' \
+missing_nonce_db = '  neural-network-trading-bot/pyTrader/auth/nonce.sqlite not found.\n' \
                    '    First db record must contain nonce value\n' \
                    '    expected by BTC-e API (0 if no prior trade\n' \
                    '    API requests have been made). Nonce has been\n' \
                    '    set to 1'
-missing_credentials_json = '  project/pyTrader/auth/api-credentials.json not found.\n' \
+missing_credentials_json = '  neural-network-trading-bot/pyTrader/auth/api-credentials.json not found.\n' \
                            '    Credentials json format should be\n' \
                            '    {"api_secret": "your-account-secret", "api_key": "your-api-key"}'
 
