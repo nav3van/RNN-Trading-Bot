@@ -1,14 +1,13 @@
 #ifndef TRAINING_H
 #define TRAINING_H
 
+#include <iostream>
 #include <deque>
-#include <fstream>
 #include <sstream>
 #include <string>
-#include <iostream>
-#include <limits>
-#include <chrono>
-#include <thread>
+#include <limits>		// numeric_limits<double>::max, numeric_limits<double>::min
+#include <chrono>		// system_clock::now, seconds
+#include <thread>		// sleep_until
 #include "sqlite3.h"
 
 enum RoundType { TRAINING, PREDICTION, UPDATE };
@@ -47,9 +46,8 @@ private:
 
   int rc_;
   sqlite3 *input_db_;
-  const char* input_data_file_ = "/home/evan/hdd1/programming/projects/ann_trading_bot/data/input.sqlite";
-  //const char* input_data_file_ = "input.sqlite";
-  const std::string input_data_table_ = "price_data";
+  const char* input_data_file_ = "/home/evan/hdd1/programming/git_repos/neural-network-trading-bot/data/input.sqlite";	// change this to your local path to input.sqlite
+  const std::string input_data_table_ = "trade_data";
   char *z_err_msg_ = 0;
   const int input_db_timeout = 5000;
 };
