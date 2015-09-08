@@ -55,10 +55,10 @@ def http_request():
             else:
                 store_log(['***Bad response***', str(json_response)])
         except urllib.request.HTTPError as e:
-            print('e1')
+            print('\nInvalid API response received, attempts remaining: ' + str(max_requests))
             store_log(['receiving api response', e])
         except Exception as e:
-            print('e2')
+            print('\nInvalid API response received, attempts remaining: ' + str(max_requests))
             store_log(['api request', e])
 
         max_requests -= 1
