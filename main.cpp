@@ -2,20 +2,20 @@
 
 #include <chrono>
 #include <thread>
-
 #include "exchange.h"
 #include "net.h"
 #include "training.h"
 
-double Neuron::eta_ = 0.05;	// overall net training rate, [ 0.0...1.0 ]
-double Neuron::alpha_ = 0.5;	// multiplier of last deltaWeight, [ 0.0...n ]
+double Neuron::eta_ = 0.05;
+double Neuron::alpha_ = 0.5;
 /*
-eta = overall net learning rate
+ETA and ALPHA defined
+eta = overall net learning rate, [ 0.0...1.0 ]
 0.0 = slow learner
 0.2 = medium learner
 1.0 = reckless learner
 
-alpha = momentum
+alpha = momentum multiplier of last deltaWeight, [ 0.0...n ]
 0.0 = no momentum
 0.5 = moderate momentum
 */
@@ -29,7 +29,7 @@ int main()
   const unsigned output_num = 1;
 
   unsigned topology[] = { input_num, hidden_1_num, hidden_2_num, hidden_3_num, output_num };
-  unsigned topology_length = sizeof(topology) / sizeof(topology[0]);  // unsigned == 4 bytes, topology == 12 (3 variables of unsigned type), topolopy[0] == 4; 12 / 4 == 3
+  unsigned topology_length = sizeof(topology) / sizeof(topology[0]);
 
   Exchange Ex;
   TrainingData Training(topology_length);
@@ -79,7 +79,7 @@ int main()
     std::cout << "Waiting for new training data   ";
     int ms = 50;
 
-    int last_db_row = Training.Get_db_row_count();
+    unsigned last_db_row = Training.Get_db_row_count();
 
     // Delays execution until a new record is detected in input.sqlite
     while (last_db_row == Training.Get_db_row_count())
@@ -105,10 +105,3 @@ int main()
 
   return 0;
 }
-
-/*
-todo
-  wait until n records are known before trying to predict the price after m future trades instead of simply predicting the next record to arrive
-  predicted future price after m trades, if the total volume of m trades exceeds predefined threshold, will get inserted into output db regardless of profit margin, trader.py determines whether to act on that output db record or not
-  after completing the above, neural net to new folder and experiment with adding additional hidden layers and using a different transform function
-*/

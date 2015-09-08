@@ -3,8 +3,6 @@
 
 #include <cassert>
 #include <cmath>
-#include <iostream>
-
 #include "neuron.h"
 
 class Net

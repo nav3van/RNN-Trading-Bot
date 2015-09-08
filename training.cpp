@@ -54,7 +54,7 @@ void TrainingData::ImportNewRecords()
   }
   else
   {
-    std::string sql_string = "SELECT last FROM " + input_data_table_ + " LIMIT -1 OFFSET " + std::to_string(input_data.size()) + ";";
+    std::string sql_string = "SELECT timestamp FROM " + input_data_table_ + " LIMIT -1 OFFSET " + std::to_string(input_data.size()) + ";";
     const char* sql = sql_string.c_str();
 
     sqlite3_busy_timeout(input_db_, input_db_timeout);
@@ -145,7 +145,7 @@ unsigned TrainingData::GetTrainingSet(double subset_inputs[], double subset_targ
 // Normalizes the values within the current subset
 void TrainingData::Normalize(unsigned set_size)
 {
-  for (int x = 0; x < set_size; ++x)
+  for (unsigned x = 0; x < set_size; ++x)
   {
     if (subset_data_[x] > subset_max_)
     {
@@ -156,7 +156,7 @@ void TrainingData::Normalize(unsigned set_size)
       subset_min_ = subset_data_[x];
     }
   }
-  for (int y = 0; y < set_size; ++y)
+  for (unsigned y = 0; y < set_size; ++y)
   {
     subset_data_[y] = (((subset_data_[y] - subset_min_) * (range_max_ - range_min_)) / (subset_max_ - subset_min_)) + range_min_;
   }
@@ -206,7 +206,7 @@ int TrainingData::RowCountCallback(void *NotUsed, int argc, char **argv, char **
   return 0;
 }
 
-// Resets set_min_ and set_max_ so that each training set can be normalized with the local minimum and maximum.
+// Resets subset_min_ and subset_max_ so that each training set can be normalized with the local minimum and maximum.
 // offset_ track of the starting index of the current subset within input_data
 // offset_ resets so that each training round begins training from the beginning of input_data
 void TrainingData::Reset()

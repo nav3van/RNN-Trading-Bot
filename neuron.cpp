@@ -1,8 +1,6 @@
-#include "neuron.h"
-
-#include <cmath>	// tanh()
+#include <cmath>		// tanh()
 #include <random>   // random_device, mt19937, uniform_real_distribution
-#include <iostream>
+#include "neuron.h"
 
 // Post condition:
 // Current layer neuron has a connection initialized to every neuron in the next layer
@@ -10,7 +8,7 @@
 // Current layer neuron knows its neuronID for the layer it resides
 Neuron::Neuron(unsigned layer_outputs, unsigned neuron_num)
 {
-  for (int current_neuron_output = 0; current_neuron_output < layer_outputs; ++current_neuron_output)
+  for (unsigned current_neuron_output = 0; current_neuron_output < layer_outputs; ++current_neuron_output)
   {
     output_weights_.emplace_back();
     output_weights_.back().connection_weight = RandomWeight();
@@ -33,7 +31,7 @@ void Neuron::FeedForward(const Layer &PreviousLayer)
   double sum = 0.0;
 
   // For each neuron in the previous layer, multiply it's output by the random weight of the connection to the current layer neuron and add the amount to sum
-  for (int current_neuron = 0; current_neuron < PreviousLayer.size(); ++current_neuron)
+  for (unsigned current_neuron = 0; current_neuron < PreviousLayer.size(); ++current_neuron)
   {
     sum += PreviousLayer[current_neuron].Get_neuron_output_value_() * PreviousLayer[current_neuron].output_weights_[neuron_number_].connection_weight;
   }
@@ -76,7 +74,7 @@ void Neuron::UpdateInputWeight(Layer &PreviousLayer)
 double Neuron::TransferFunction(double x)
 {
   // hyperbolic tangent function; tanh - output range[ -1.0...1.0 ]
-  // when setting up training data, need to make sure that the output data is within the range of what the transfer function is able to make
+  // when setting up training data, need to make sure that the output data is within the range of what the transfer function is able to produce
   return tanh(x);
 }
 
@@ -91,7 +89,7 @@ double Neuron::SumDOW(const Layer &NextHiddenLayer) const
   double sum = 0.0;
 
   // Sum our contribution of the errors at the node we feed
-  for (int current_neuron = 0; current_neuron < NextHiddenLayer.size() - 1; ++current_neuron)
+  for (unsigned current_neuron = 0; current_neuron < NextHiddenLayer.size() - 1; ++current_neuron)
   {
     sum += output_weights_[current_neuron].connection_weight * NextHiddenLayer[current_neuron].gradient_;
   }

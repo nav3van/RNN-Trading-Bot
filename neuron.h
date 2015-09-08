@@ -2,7 +2,6 @@
 #define NEURON_H
 
 #include <vector>
-
 #include "connection.h"
 
 class Neuron;
@@ -26,8 +25,8 @@ private:
 
   double SumDOW(const Layer &NextHiddenLayer) const;
 
-  static double eta_; 	// [ 0.0...1.0 ] overall net training rate
-  static double alpha_;	// [ 0.0...n ] multiplier of last weight change (momentum)
+  static double eta_;
+  static double alpha_;
   double neuron_output_value_;
   std::vector<Connection> output_weights_;
 
