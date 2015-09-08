@@ -1,15 +1,18 @@
 import sys      # stdout.write, stdout.flush
-import time     # sleep
+
+from file_check import *
+
+nonce_file = 'auth/nonce.sqlite'
+output_file = parent_dir + 'data/output.sqlite'
+
+check_data_files()
 
 from print_trade_info import set_low_balance_msg, print_trade, reset_print_info
-from db_access import db_connect, db_exists, output_records_exist, output_init_record, get_last_output_record
+from db_access import db_connect, db_exists, output_records_exist, output_init_record, get_last_output_record, create_nonce_db
 from balances import *
 from analyst import *
 from trader import *
 from info_track import *
-
-nonce_file = 'auth/nonce.sqlite'
-output_file = '/home/evan/hdd1/programming/projects/ann_trading_bot/data/output.sqlite'
 
 bal = Balance(0, 0)
 timer = Timer()

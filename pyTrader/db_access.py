@@ -1,9 +1,14 @@
 import sqlite3  # execute, fetchone, fetchall, commit
-import os.path  # path.isFile
+import os.path  # path.isfile
 
 timeout = 15
 nonce_table = 'nonce'
 output_table = 'output'
+
+def create_nonce_db():
+    new_nonce_db = sqlite3.connect('auth/nonce.sqlite')
+    new_nonce_db.execute('CREATE TABLE IF NOT EXISTS nonce (current_nonce INTEGER)' )
+    new_nonce_db.close()
 
 def db_connect(_nonce_db_path, _output_db_path):
     global nonce_connect, nonce_cursor
