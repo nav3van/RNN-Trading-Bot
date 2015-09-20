@@ -2,3 +2,6 @@ auth/
 __pycache__/
 .idea/
 repo-info/
+bin/
+build/
+neural-network-predictor
