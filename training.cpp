@@ -7,10 +7,17 @@ double TrainingData::subset_min_ = std::numeric_limits<double>::max();
 double TrainingData::subset_max_ = std::numeric_limits<double>::min();
 
 // Post Conditions
-// - input.sqlite is opened
+// - input.sqlite exists and is open
 // - input.sqlite contains a record count >= 10*subset_length
 TrainingData::TrainingData(unsigned total_layers)
 {
+  while (!InputExists())
+  {
+    std::cout << "\rWaiting for data/input.sqlite to exist, run pyTrader/trade_stream.py" << std::flush;
+    std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::seconds(2));
+  }
+  std::cout << std::endl;
+
   rc_ = sqlite3_open(input_data_file_, &input_db_);
 
   if (rc_ != SQLITE_OK)
@@ -54,7 +61,7 @@ void TrainingData::ImportNewRecords()
   }
   else
   {
-    std::string sql_string = "SELECT timestamp FROM " + input_data_table_ + " LIMIT -1 OFFSET " + std::to_string(input_data.size()) + ";";
+    std::string sql_string = "SELECT buy FROM " + input_data_table_ + " LIMIT -1 OFFSET " + std::to_string(input_data.size()) + ";";
     const char* sql = sql_string.c_str();
 
     sqlite3_busy_timeout(input_db_, input_db_timeout);
@@ -166,6 +173,12 @@ void TrainingData::Normalize(unsigned set_size)
 double TrainingData::Denormalize(double target_value)
 {
   return (((subset_min_ - subset_max_) * target_value - (range_max_ * subset_min_) + (subset_max_ * range_min_)) / (range_min_ - range_max_));
+}
+
+bool TrainingData::InputExists()
+{
+  std::ifstream input_db(input_data_file_);
+  return input_db.good();
 }
 
 // Returns the current number of rows present in input.sqlite
