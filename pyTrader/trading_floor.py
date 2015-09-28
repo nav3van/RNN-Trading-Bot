@@ -11,7 +11,7 @@ from trader import *
 from info_track import *
 
 nonce_file = 'auth/nonce.sqlite'
-output_file = parent_dir + 'data/output.sqlite'
+output_file = parent_dir + 'build/data/output.sqlite'
 
 bal = Balance(0, 0)
 timer = Timer()

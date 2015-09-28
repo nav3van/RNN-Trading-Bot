@@ -19,7 +19,7 @@ missing_data = []
 
 parent_dir = os.path.dirname(os.path.realpath('')) + '/'
 nonce_file = 'auth/nonce.sqlite'
-output_file = parent_dir + 'data/output.sqlite'
+output_file = parent_dir + 'build/data/output.sqlite'
 
 def notify_missing_directory():
     for directory in missing_directory:
@@ -36,8 +36,8 @@ def check_data_files():
     else:
         print('Detected auth directory')
 
-    if not os.path.exists(parent_dir + 'data'):
-        os.makedirs(parent_dir + 'data')
+    if not os.path.exists(parent_dir + 'build/data'):
+        os.makedirs(parent_dir + 'build/data')
         missing_directory.append(missing_data_dir)
     else:
         print('Detected data directory')

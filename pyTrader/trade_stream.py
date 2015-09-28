@@ -81,7 +81,7 @@ def get_trade_data():
 
 
 def store_log(_argv):
-    with open(parent_dir + 'data/error.log', 'a+') as log_file:
+    with open(parent_dir + 'build/data/error.log', 'a+') as log_file:
         log_file.write('\n/-------------------\\\n')
         for argc in _argv:
             if argc == _argv[0]:
@@ -93,7 +93,7 @@ def store_log(_argv):
 
 
 current_dir_oath = os.path.realpath(os.path.dirname(''))
-out_dir_path = parent_dir + 'data/'
+out_dir_path = parent_dir + 'build/data/'
 out_file_name = 'input.sqlite'
 
 socket_timeout = 15

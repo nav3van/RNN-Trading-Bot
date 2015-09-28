@@ -8,6 +8,7 @@
 #include <limits>		// numeric_limits<double>::max, numeric_limits<double>::min
 #include <chrono>		// system_clock::now, seconds
 #include <thread>		// sleep_until
+#include <fstream>
 #include "sqlite3.h"
 
 enum RoundType { TRAINING, PREDICTION, UPDATE };
@@ -25,6 +26,7 @@ public:
   void Normalize(unsigned set_size);
   double Denormalize(double target_value);
 
+  bool InputExists();
   unsigned Get_db_row_count();
   void Reset();
 
@@ -46,7 +48,7 @@ private:
 
   int rc_;
   sqlite3 *input_db_;
-  const char* input_data_file_ = "/home/evan/hdd1/programming/git_repos/neural-network-trading-bot/data/input.sqlite";	// change this to your local path to input.sqlite
+  const char* input_data_file_ = "data/input.sqlite";	// change this to your local path to input.sqlite
   const std::string input_data_table_ = "trade_data";
   char *z_err_msg_ = 0;
   const int input_db_timeout = 5000;

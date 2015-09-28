@@ -21,7 +21,7 @@ private:
 
   int rc_;
   sqlite3 *output_db_;
-  const char* output_data_file_ = "/home/evan/hdd1/programming/git_repos/neural-network-trading-bot/data/output.sqlite";	// change this to your local path to output.sqlite
+  const char* output_data_file_ = "data/output.sqlite";	// change this to your local path to output.sqlite
   std::string output_data_table_ = "output";
   char *z_err_msg_ = 0;
   const int output_db_timeout = 5000;
