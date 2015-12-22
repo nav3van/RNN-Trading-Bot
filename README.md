@@ -1,4 +1,4 @@
-# Neural Network Trading Bot
+# RNN-Trading-Bot
 ## About
 C++ implementation of artificial neural network (ann) that analyzes BTC-e trade data to predict future 
 prices and generate trades accord to those predictions. Uses python3 to executes trades output 
